@@ -2,6 +2,8 @@ package ru.practicum.shareit.item;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.practicum.shareit.exception.ForbiddenException;
+import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
@@ -18,7 +20,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDto create(ItemDto dto, Long ownerId) {
         User owner = userRepository.findById(ownerId)
-                .orElseThrow(() -> new RuntimeException("User not found: " + ownerId));
+                .orElseThrow(() -> new NotFoundException("User not found: " + ownerId));
 
         Item item = ItemMapper.toItem(dto, owner);
 
@@ -28,10 +30,10 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDto update(Long itemId, ItemDto dto, Long ownerId) {
         Item existing = itemRepository.findById(itemId)
-                .orElseThrow(() -> new RuntimeException("Item not found: " + itemId));
+                .orElseThrow(() -> new NotFoundException("Item not found: " + itemId));
 
         if (!existing.getOwner().getId().equals(ownerId)) {
-            throw new RuntimeException("Only owner can edit item");
+            throw new ForbiddenException("Only owner can edit item");
         }
 
         if (dto.getName() != null) {
