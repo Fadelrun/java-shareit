@@ -10,7 +10,10 @@ import lombok.NoArgsConstructor;
 /**
  * TODO Sprint add-controllers.
  */
-@Data @Builder @NoArgsConstructor @AllArgsConstructor
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ItemDto {
     private Long id;
 
