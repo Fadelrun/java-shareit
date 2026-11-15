@@ -7,12 +7,13 @@ import ru.practicum.shareit.user.dto.UserDto;
 
 import java.util.List;
 
-/**
- * TODO Sprint add-controllers.
- */
+import jakarta.validation.constraints.Positive;
+import org.springframework.validation.annotation.Validated;
+
 @RestController
 @RequestMapping(path = "/users")
 @RequiredArgsConstructor
+@Validated
 public class UserController {
     private final UserService service;
 
@@ -22,13 +23,13 @@ public class UserController {
     }
 
     @PatchMapping("/{userId}")
-    public UserDto update(@PathVariable Long userId,
+    public UserDto update(@Positive @PathVariable Long userId,
                           @RequestBody UserDto dto) {
         return service.update(userId, dto);
     }
 
     @GetMapping("/{userId}")
-    public UserDto getById(@PathVariable Long userId) {
+    public UserDto getById(@Positive @PathVariable Long userId) {
         return service.getById(userId);
     }
 
@@ -38,7 +39,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    public void delete(@PathVariable Long userId) {
+    public void delete(@Positive @PathVariable Long userId) {
         service.delete(userId);
     }
 }

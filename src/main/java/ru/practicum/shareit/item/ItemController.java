@@ -7,35 +7,36 @@ import ru.practicum.shareit.item.dto.ItemDto;
 
 import java.util.List;
 
-/**
- * TODO Sprint add-controllers.
- */
+import jakarta.validation.constraints.Positive;
+import org.springframework.validation.annotation.Validated;
+
 @RestController
 @RequestMapping("/items")
 @RequiredArgsConstructor
+@Validated
 public class ItemController {
     private final ItemService service;
 
     @PostMapping
-    public ItemDto create(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public ItemDto create(@Positive @RequestHeader("X-Sharer-User-Id") Long userId,
                           @Valid @RequestBody ItemDto dto) {
         return service.create(dto, userId);
     }
 
     @PatchMapping("/{itemId}")
-    public ItemDto update(@RequestHeader("X-Sharer-User-Id") Long userId,
-                          @PathVariable Long itemId,
+    public ItemDto update(@Positive @RequestHeader("X-Sharer-User-Id") Long userId,
+                          @Positive @PathVariable Long itemId,
                           @RequestBody ItemDto dto) {
         return service.update(itemId, dto, userId);
     }
 
     @GetMapping("/{itemId}")
-    public ItemDto getById(@PathVariable Long itemId) {
+    public ItemDto getById(@Positive @PathVariable Long itemId) {
         return service.getById(itemId);
     }
 
     @GetMapping
-    public List<ItemDto> getByOwner(@RequestHeader("X-Sharer-User-Id") Long userId) {
+    public List<ItemDto> getByOwner(@Positive @RequestHeader("X-Sharer-User-Id") Long userId) {
         return service.getByOwner(userId);
     }
 
